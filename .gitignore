@@ -1,0 +1,41 @@
+# Python bytecode
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Conda environment directory
+.conda/
+
+# VSCode settings
+.vscode/
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Virtual environments
+env/
+venv/
+*.egg-info/
+
+# Logs and outputs
+*.log
+*.out
+
+# Experiment result files
+exp*.png
+exp*.txt
+
+# Personal files
+original.ipynb
+trade_signals.png
+
+# Ignore compiled or temporary files
+*.so
+*.swp
+
+# Ignore requirements.txt if generated dynamically
+# !requirements.txt  ← 주석을 해제하면 포함시킴

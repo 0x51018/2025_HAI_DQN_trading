@@ -3,7 +3,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import random
-from dqn_trading_agent import Agent, DQNetwork
+from DQN_train import Agent, DQNetwork
 
 # ─── 커스텀 보상 함수 정의 ─────────────────────────────────
 def reward_log_return(agent, t, action):
@@ -78,8 +78,8 @@ for idx, cfg in enumerate(experiments, start=1):
         trend=price_series,
         skip=1,
         batch_size=32,
-        open_list=df["Open"].values.tolist(),
-        close_list=df["Close"].values.tolist(),
+        open_list=df["open"].values.tolist(),
+        close_list=df["close"].values.tolist(),
         reward_fn=cfg["reward_fn"],
         network_class=DQNetwork,
         network_kwargs=cfg["network_kwargs"]

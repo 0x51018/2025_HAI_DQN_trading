@@ -9,8 +9,10 @@ import random
 
 # ─── 0. 데이터 로드 ─────────────────────────────────────────
 df = pd.read_csv("prices/AAPL.csv", index_col=0)
-open_prices  = df["Open"].values.tolist()
-close_prices = df["Close"].values.tolist()
+# Normalize column names to lowercase so 'Open'/'Close' become 'open'/'close'
+df.columns = df.columns.str.lower()
+open_prices  = df["open"].values.tolist()
+close_prices = df["close"].values.tolist()
 
 # ─── 1. 디바이스 설정 ───────────────────────────────────────
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
@@ -63,10 +65,17 @@ class Agent:
 
     def get_state(self, t):
         ws = self.window_size + 1
-        d  = t - ws + 1
-        block = (self.trend[d:t+1] if d >= 0 
-                 else [-d * self.trend[0]] + self.trend[0:t+1])
-        diffs = [block[i+1] - block[i] for i in range(ws - 1)]
+        d = t - ws + 1
+        if d >= 0:
+            block = self.trend[d:t + 1]
+        else:
+            pad_len = -d
+            block = [self.trend[0]] * pad_len + self.trend[0:t + 1]
+        # 🔒 안전 장치 추가
+        if len(block) != ws:
+            block = block[:ws]  # 잘못되면 자르기
+
+        diffs = [block[i + 1] - block[i] for i in range(len(block) - 1)]
         return np.array(diffs, dtype=np.float32)
 
     def replay(self):
